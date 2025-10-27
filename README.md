@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Research project page template
 
 This is a template you can use to build a project page for your research paper, adapted from the original [Nerfies page](https://nerfies.github.io/). It's designed to be easy to set up for those without web development experience, but web developers will appreciate that it's flexible and built with modern, familiar technologies. See a live demo of the template [here](https://research-template.roman.technology).
@@ -50,3 +51,6 @@ For more documentation, consult [`./documentation.md`](./documentation.md).
 ## Credits
 
 This template was adapted from Eliahu Horwitz's [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template), which was adapted from Keunhong Park's [project page for _Nerfies_](https://nerfies.github.io/). It's licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/).
+=======
+# sofono-page
+>>>>>>> 9589704018ead0f639fb1bb2cef10cd373d789a6
