@@ -1,25 +1,20 @@
 ---
 layout: ../layouts/Layout.astro
-title: Research Project Page Template
+title: "SoFoNO : Arbitrary-Scale Image Super-Resolution via Sobolev Fourier Neural Operator"
+conference: NeuroComputing
 authors:
-  - name: Roman Hauksson
-    url: https://roman.technology
-    institution: University of Texas at Dallas
-    notes: ["*", †]
-  - name: Author Two
-    institution: Institution Two
-    notes: ["*", †]
-  - name: Author Three
-    institution: Institution Three
+  - name: Jong Kwon Oh
+    institution: Pohang University of Science and Technology
+  - name: Hwijae Son
+    institution: Konkuk University
+  - name: Hyung Ju Hwang
+    institution: Pohang University of Science and Technology
+  - name: Jihyong Oh
+    institution: Chung-Ang University
     notes: ["*"]
-  - name: Author Four
-    institution: Institution Four
-conference: Conference Name
 notes:
   - symbol: "*"
-    text: author note one
-  - symbol: †
-    text: author note two
+    text: Corresponding Author
 links:
   - name: Paper
     url: https://github.com/RomanHauksson/academic-project-astro-template
@@ -57,87 +52,150 @@ import outside from "../assets/outside.mp4";
 import transformer from "../assets/transformer.webp";
 import dogsDiffc from "../assets/dogs-diffc.png"
 import dogsTrue from "../assets/dogs-true.png"
+import graphical_abstract from "../assets/graphical_abstract.png"
+
+import DemoSwitcher from "../components/DemoSwitcher.tsx";
+import input_1 from "../assets/input_1.png"
+import output_1 from "../assets/output_1.png"
+import input_2 from "../assets/input_2.png"
+import output_2 from "../assets/output_2.png"
+import input_3 from "../assets/input_3.png"
+import output_3 from "../assets/output_3.png"
+
+import div2k from "../assets/DIV2K_table.png"
+import benchmark_table from "../assets/Benchmark_table.png"
+import benchmark_table_1 from "../assets/Benchmark_table1.png"
+import benchmark_table_2 from "../assets/Benchmark_table2.png"
+import qualitative_result from "../assets/qualitative_result.png"
+import qualitative_result_1 from "../assets/qualitative_result_1.png"
+import qualitative_result_2 from "../assets/qualitative_result_2.png"
 
 import Table from "../components/Table.astro";
 export const components = { table: Table }
 
-<Video src={outside} />
+<br />
 
-<HighlightedSection>
+<div class="mx-auto max-w-[65rem] px-6 rounded-xl bg-zinc-100 dark:bg-zinc-800">
+  <HighlightedSection>
+  
+  ## Abstract
 
-## Abstract
+  Accurately reconstructing fine textures and sharp edges remains a significant challenge in Single Image Super-Resolution (SISR) tasks, often resulting in overly smooth and less realistic images.
+  To alleviate this issue we propose a novel SISR framework named Sobolev Fourier Neural Operator (SoFoNO).
+  Central to our approach is a specialized architecture featuring a Sobolev Branch, which effectively captures detailed structures in the frequency domain via a learnable Sobolev exponent.
+  Importantly, the learned Sobolev exponent is directly employed as derivative order parameters within the Sobolev loss function, enabling more precise and visually coherent reconstructions.
+  Unlike conventional pixel-level loss functions, the Sobolev loss explicitly incorporates frequency-domain penalties, significantly enhancing the reconstruction quality of detailed image structures.
+  Extensive experiments conducted on multiple datasets under both in-scale and out-scale scenarios demonstrate that our SoFoNO provides robust and effective performance in arbitrary-scale super-resolution, consistently outperforming representative existing methods across various tested scale factors without relying on attention mechanisms.
 
-This is a live demo for a template you can use to create a simple project page for your research paper. See the code for the template and instructions on how to use it yourself [here](https://github.com/RomanHauksson/academic-project-astro-template). It's made with the [Astro web framework](https://astro.build/) and styled with [Tailwind CSS](https://tailwindcss.com/). You write the content in [MDX](https://mdxjs.com/), which enables markdown formatting like **bold**, _italics_, and ~strikethrough~, as well as custom components like <SmallCaps>small caps.</SmallCaps>
+  </HighlightedSection>
+</div>
 
-</HighlightedSection>
+## Demo
 
-## Figures
+<DemoSwitcher
+  client:idle
+  pairs={[
+    {
+      leftSrc: input_1.src ?? input_1,
+      rightSrc: output_1.src ?? output_1,
+      leftAlt: "Input 1 (degraded)",
+      rightAlt: "Output 1 (restored)",
+      label: "1"
+    },
+    {
+      leftSrc: input_2.src ?? input_2,
+      rightSrc: output_2.src ?? output_2,
+      leftAlt: "Input 2 (degraded)",
+      rightAlt: "Output 2 (restored)",
+      label: "2"
+    },
+    {
+      leftSrc: input_3.src ?? input_3,
+      rightSrc: output_3.src ?? output_3,
+      leftAlt: "Input 3 (degraded)",
+      rightAlt: "Output 3 (restored)",
+      label: "3"
+    }
+  ]}
+/>
+
+## Architecture
 
 Use the figure component to display images, videos, equations, or any other element, with an optional caption.
 
-<Figure>
-  <Picture slot="figure" src={transformer} alt="Diagram of the transformer deep learning architecture." invertInDarkMode />
-  <Fragment slot="caption">Diagram of the transformer deep learning architecture.</Fragment>
-</Figure>
+<div class="bg-white inline-block px-5 rounded-xl">
+  <Figure>
+    <Picture
+      slot="figure"
+      src={graphical_abstract}
+      alt="Diagram of the transformer deep learning architecture."
+    />
+    <Fragment slot="caption">
+      Diagram of the transformer deep learning architecture.
+    </Fragment>
+  </Figure>
+</div>
+
 
 If you stored your figures as PDFs, the `Picture` component can convert them into web-friendly images automatically.
+## Results
 
-<Figure>
-  <Picture slot="figure" src="../assets/allstate-sparsity.pdf" alt="Impact of the sparsity-aware algorithm in XGBoost on the Allstate-10K dataset." invertInDarkMode />
-  <Fragment slot="caption">Impact of the sparsity-aware algorithm in [XGBoost](https://arxiv.org/abs/1603.02754) on the Allstate-10K dataset.</Fragment>
-</Figure>
+### Quantitative Results
 
-Use the `Comparison` component to compare two elements with an interactive slider. It should work for any component or HTML element, including images, videos, and 3D models.
+<div class="flex flex-col items-center gap-8">
+  <div class="bg-white inline-block px-5 rounded-xl">
+    <Figure>
+      <Picture
+        slot="figure"
+        src={div2k}
+        alt="DIV2K Dataset Benchmark Table"
+      />
+      <Fragment slot="caption">
+        Results on the DIV2K validation set.
+      </Fragment>
+    </Figure>
+  </div>
 
-<Figure>
-  <Comparison slot="figure" client:idle >
-    <Picture slot="itemOne" src={dogsDiffc} alt="Photo of two dogs running side-by-side in shallow water, lossily compressed using the DiffC algorithm" />
-    <Picture slot="itemTwo" src={dogsTrue} alt="Original photo of two dogs running side-by-side in shallow water" />
-  </Comparison>
-  <Fragment slot="caption">A photo of two dogs running side-by-side in shallow water, lossily compressed using the [DiffC algorithm](https://jeremyiv.github.io/diffc-project-page/).</Fragment>
-</Figure>
+  <div class="bg-white inline-block px-5 rounded-xl">
+    <Figure>
+      <Picture
+        slot="figure"
+        src={benchmark_table}
+        alt="Benchmark Table"
+      />
+      <Fragment slot="caption">
+        Comparison with state-of-the-art methods.
+      </Fragment>
+    </Figure>
+  </div>
+</div>
 
-## Two columns
+### Qualitative Results
 
-Use the two columns component to display two columns of content. In this example, the first column contains a figure with a YouTube video and the second column contains a figure with a custom [React](https://react.dev/) component. By default, they display side by side, but if the screen is narrow enough (for example, on mobile), they're arranged vertically.
+<div class="flex flex-wrap justify-center gap-8">
+  <div class="bg-white inline-block px-5 rounded-xl max-w-[28rem]">
+    <Figure>
+      <Picture slot="figure" src={qualitative_result_1} alt="Qualitative Results 1" />
+      <Fragment slot="caption">Qualitative Results (Set 1)</Fragment>
+    </Figure>
+  </div>
 
-<TwoColumns>
-  <Figure slot="left">
-    <YouTubeVideo slot="figure" videoId="wjZofJX0v4M" />
-    <Fragment slot="caption">Take a look at this YouTube video.</Fragment>
-  </Figure>
-  <Figure slot="right">
-    <ModelViewer slot="figure" src="/BoxVertexColors.glb" alt="A cube colored with a rainbow gradient" />
-    <Fragment slot="caption">Now look at this cube, rendered with the `<model-viewer>` web component.</Fragment>
-  </Figure>
-</TwoColumns>
+  <div class="bg-white inline-block px-5 rounded-xl max-w-[28rem]">
+    <Figure>
+      <Picture slot="figure" src={qualitative_result_2} alt="Qualitative Results 2" />
+      <Fragment slot="caption">Qualitative Results (Set 2)</Fragment>
+    </Figure>
+  </div>
 
-## LaTeX
-
-You can also add LaTeX formulas, rendered during the build process using [KaTeX](https://katex.org/) so they're quick to load for visitors of your project page. You can write them inline, like this: <LaTeX inline formula="a^2 + b^2 = c^2" />. Or, you can write them as a block:
-
-<LaTeX formula="\int_a^b f(x) dx" />
-
-## Tables
-
-Add simple tables using [GitHub Flavored Markdown syntax](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables):
-
-| Model | Accuracy | F1 score | Training time (hours) |
-| :--- | :---: | :---: | :---: |
-| BERT-base | 0.89 | 0.87 | 4.5 |
-| RoBERTa-large | 0.92 | 0.91 | 7.2 |
-| DistilBERT | 0.86 | 0.84 | 2.1 |
-| XLNet | 0.90 | 0.89 | 6.8 |
+</div>
 
 ## BibTeX citation
 
-Displaying your BibTeX citation in a code block makes it easy to copy and paste.
-
 ```bibtex
-@misc{roman2024academic,
-  author = "{Roman Hauksson}",
-  title = "Academic Project Page Template",
-  year = "2024",
+@misc{-,
+  author = "{-}",
+  title = "-",
+  year = "-",
   howpublished = "\url{https://research-template.roman.technology}",
 }
 ```
