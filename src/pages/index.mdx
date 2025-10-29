@@ -26,13 +26,8 @@ links:
     url: https://github.com/RomanHauksson/academic-project-astro-template
     icon: academicons:arxiv
 
-# The color theme of the page. Defaults to "device" (the preference set in the user's brower or operating system). Setting this to "light" or "dark" will override the user's preference. This is useful if your figures only look good in one theme.
 theme: device
-
-# This is the icon that appears in the user's browser tab. To customize, change the favicon.svg file in /public/, or add your own file to /public/ and change the filename here.
 favicon: favicon.svg
-
-# These keys are optional. If a link to your project page is in a Google search result, text message, or social media post, it will often appear as a "link preview card" based on its title, description, favicon, and thumbnail. After you publish your page, you can double check that these previews look right using [this tool](https://linkpreview.xyz/)
 description: Simple project page template for your research paper, built with Astro and Tailwind CSS
 thumbnail: screenshot-light.png
 ---
@@ -48,13 +43,19 @@ import YouTubeVideo from "../components/YouTubeVideo.astro";
 import LaTeX from "../components/LaTeX.astro";
 import { Comparison } from "../components/Comparison.tsx";
 
+import DemoSwitcher from "../components/DemoSwitcher.tsx";
+import Table from "../components/Table.astro";
+export const components = { table: Table }
+
+import am2 from "../assets/am2.png";
+import cmlab from "../assets/cmlab.png";
+
 import outside from "../assets/outside.mp4";
 import transformer from "../assets/transformer.webp";
 import dogsDiffc from "../assets/dogs-diffc.png"
 import dogsTrue from "../assets/dogs-true.png"
 import graphical_abstract from "../assets/graphical_abstract.png"
 
-import DemoSwitcher from "../components/DemoSwitcher.tsx";
 import input_1 from "../assets/input_1.png"
 import output_1 from "../assets/output_1.png"
 import input_2 from "../assets/input_2.png"
@@ -69,9 +70,6 @@ import benchmark_table_2 from "../assets/Benchmark_table2.png"
 import qualitative_result from "../assets/qualitative_result.png"
 import qualitative_result_1 from "../assets/qualitative_result_1.png"
 import qualitative_result_2 from "../assets/qualitative_result_2.png"
-
-import Table from "../components/Table.astro";
-export const components = { table: Table }
 
 <br />
 
@@ -100,44 +98,45 @@ export const components = { table: Table }
       rightSrc: output_1.src ?? output_1,
       leftAlt: "Input 1 (degraded)",
       rightAlt: "Output 1 (restored)",
-      label: "1"
     },
     {
       leftSrc: input_2.src ?? input_2,
       rightSrc: output_2.src ?? output_2,
       leftAlt: "Input 2 (degraded)",
       rightAlt: "Output 2 (restored)",
-      label: "2"
     },
     {
       leftSrc: input_3.src ?? input_3,
       rightSrc: output_3.src ?? output_3,
       leftAlt: "Input 3 (degraded)",
       rightAlt: "Output 3 (restored)",
-      label: "3"
     }
   ]}
 />
 
 ## Architecture
 
-Use the figure component to display images, videos, equations, or any other element, with an optional caption.
+The proposed SoFoNO architecture consists of three main stages: Encoder, SoFoNO Blocks, and Decoder.
 
 <div class="bg-white inline-block px-5 rounded-xl">
   <Figure>
     <Picture
       slot="figure"
       src={graphical_abstract}
-      alt="Diagram of the transformer deep learning architecture."
+      alt="Overall Architecture of SoFoNO."
     />
     <Fragment slot="caption">
-      Diagram of the transformer deep learning architecture.
+      Overall Architecture of SoFoNO.
     </Fragment>
   </Figure>
 </div>
 
+First, a low-resolution (LR) image is processed by an EDSR encoder to produce deep feature maps that capture local texture information.
+Then, a Local Ensemble module performs arbitrary-scale upsampling by aggregating nearby latent features with their relative coordinates, enabling flexible resolution synthesis.
+ These features are fed into a sequence of SoFoNO Blocks, each containing two parallel branches: a Local Branch that refines spatial details and a Sobolev Branch that operates in the frequency domain to emphasize high-frequency components using a learnable Sobolev exponent.
+ The two branches are adaptively fused through Cross-Mixing and AdaIN operations to effectively integrate spatial and spectral information. 
+ Finally, the Decoder reconstructs the high-resolution image through lightweight convolutional layers and bilinear interpolation, while a combined real- and frequency-domain loss ensures balanced optimization.
 
-If you stored your figures as PDFs, the `Picture` component can convert them into web-friendly images automatically.
 ## Results
 
 ### Quantitative Results
@@ -164,11 +163,15 @@ If you stored your figures as PDFs, the `Picture` component can convert them int
         alt="Benchmark Table"
       />
       <Fragment slot="caption">
-        Comparison with state-of-the-art methods.
+        Results on the Benchmark datasets.
       </Fragment>
     </Figure>
   </div>
 </div>
+
+SoFoNO demonstrates consistently superior performance across various datasets.
+It achieves outstanding results on the DIV2K validation set and maintains high performance on multiple benchmark datasets, including Set5, Set14, B100, and Urban100. 
+These results highlight SoFoNO’s strong generalization ability and its effectiveness in producing high-quality, detail-preserving reconstructions across diverse image domains.
 
 ### Qualitative Results
 
@@ -176,18 +179,22 @@ If you stored your figures as PDFs, the `Picture` component can convert them int
   <div class="bg-white inline-block px-5 rounded-xl max-w-[28rem]">
     <Figure>
       <Picture slot="figure" src={qualitative_result_1} alt="Qualitative Results 1" />
-      <Fragment slot="caption">Qualitative Results (Set 1)</Fragment>
+      <Fragment slot="caption">Qualitative Results (Upscaling factor&nbsp;:&nbsp;&times;4)</Fragment>
     </Figure>
   </div>
 
   <div class="bg-white inline-block px-5 rounded-xl max-w-[28rem]">
     <Figure>
       <Picture slot="figure" src={qualitative_result_2} alt="Qualitative Results 2" />
-      <Fragment slot="caption">Qualitative Results (Set 2)</Fragment>
+      <Fragment slot="caption">Qualitative Results (Upscaling factor&nbsp;:&nbsp;&times;10)</Fragment>
     </Figure>
   </div>
-
 </div>
+
+SoFoNO demonstrates remarkable visual fidelity. 
+The left panel (×4) shows SoFoNO’s ability to accurately reconstruct fine textures and structural patterns, preserving high-frequency details with exceptional clarity.
+In contrast, the right panel (×10) highlights its robustness under extreme out-scale conditions, where conventional methods often fail. 
+SoFoNO faithfully restores complex structures like ceiling textures, maintaining both texture coherence and geometric consistency.
 
 ## BibTeX citation
 
@@ -198,4 +205,3 @@ If you stored your figures as PDFs, the `Picture` component can convert them int
   year = "-",
   howpublished = "\url{https://research-template.roman.technology}",
 }
-```
