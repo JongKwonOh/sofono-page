@@ -1,18 +1,22 @@
 ---
 layout: ../layouts/Layout.astro
 title: "SoFoNO : Arbitrary-Scale Image Super-Resolution via Sobolev Fourier Neural Operator"
-conference: NeuroComputing
+conference: NeuroComputing'25
 authors:
   - name: Jong Kwon Oh
     institution: Pohang University of Science and Technology
+    notes: [1]
   - name: Hwijae Son
     institution: Konkuk University
+    notes: ["1"]
   - name: Hyung Ju Hwang
     institution: Pohang University of Science and Technology
   - name: Jihyong Oh
     institution: Chung-Ang University
     notes: ["*"]
 notes:
+  - symbol : 1
+    text: Co-first authors
   - symbol: "*"
     text: Corresponding Author
 links:
@@ -52,16 +56,18 @@ import cmlab from "../assets/cmlab.png";
 
 import outside from "../assets/outside.mp4";
 import transformer from "../assets/transformer.webp";
-import dogsDiffc from "../assets/dogs-diffc.png"
-import dogsTrue from "../assets/dogs-true.png"
 import graphical_abstract from "../assets/graphical_abstract.png"
 
-import input_1 from "../assets/input_1.png"
-import output_1 from "../assets/output_1.png"
-import input_2 from "../assets/input_2.png"
-import output_2 from "../assets/output_2.png"
-import input_3 from "../assets/input_3.png"
-import output_3 from "../assets/output_3.png"
+import demo_1 from "../assets/demo_1.gif?url"
+
+import input_x2 from "../assets/input_x2.png"
+import output_x2 from "../assets/output_x2.png"
+import input_x3 from "../assets/input_x3.png"
+import output_x3 from "../assets/output_x3.png"
+import input_x4 from "../assets/input_x4.png"
+import output_x4 from "../assets/output_x4.png"
+import input_x8 from "../assets/input_x8.png"
+import output_x8 from "../assets/output_x8.png"
 
 import div2k from "../assets/DIV2K_table.png"
 import benchmark_table from "../assets/Benchmark_table.png"
@@ -71,7 +77,13 @@ import qualitative_result from "../assets/qualitative_result.png"
 import qualitative_result_1 from "../assets/qualitative_result_1.png"
 import qualitative_result_2 from "../assets/qualitative_result_2.png"
 
+import motivation from "../assets/motivation.png?url"
+import plot from "../assets/plot_s.png"
+import freq from "../assets/frequency_comparison.png"
+
 <br />
+
+**_TL;DR — We present Sobolev Fourier Neural Operator (SoFoNO) that learns Sobolev exponents to enhance frequency-domain detail reconstruction, achieving more realistic arbitrary-scale super-resolution without attention._**
 
 <div class="mx-auto max-w-[65rem] px-6 rounded-xl bg-zinc-100 dark:bg-zinc-800">
   <HighlightedSection>
@@ -90,29 +102,66 @@ import qualitative_result_2 from "../assets/qualitative_result_2.png"
 
 ## Demo
 
+<div class="flex flex-col items-center my-6 space-y-3 not-prose">
+  <p class="text-center text-lg font-bold text-gray-800 dark:text-gray-200">
+    <span>Upscaling factor ×4</span>  <br /> <br />
+    <span>Input</span>
+    <span class="inline-block mx-45"> </span>
+    <span>Output</span>
+  </p>
+  <img src={demo_1} alt="Demo animation" width="800" class="rounded-xl shadow-md" />
+</div>
+
+
+
 <DemoSwitcher
   client:idle
   pairs={[
     {
-      leftSrc: input_1.src ?? input_1,
-      rightSrc: output_1.src ?? output_1,
+      leftSrc: input_x2.src ?? input_x2,
+      rightSrc: output_x2.src ?? output_x2,
       leftAlt: "Input 1 (degraded)",
       rightAlt: "Output 1 (restored)",
+      label: "Upscaling factor : ×2"
     },
     {
-      leftSrc: input_2.src ?? input_2,
-      rightSrc: output_2.src ?? output_2,
+      leftSrc: input_x3.src ?? input_x3,
+      rightSrc: output_x3.src ?? output_x3,
       leftAlt: "Input 2 (degraded)",
       rightAlt: "Output 2 (restored)",
+      label: "Upscaling factor : ×3"
     },
     {
-      leftSrc: input_3.src ?? input_3,
-      rightSrc: output_3.src ?? output_3,
+      leftSrc: input_x4.src ?? input_x4,
+      rightSrc: output_x4.src ?? output_x4,
       leftAlt: "Input 3 (degraded)",
       rightAlt: "Output 3 (restored)",
+      label: "Upscaling factor : ×4"
+    },
+    {
+      leftSrc: input_x8.src ?? input_x8,
+      rightSrc: output_x8.src ?? output_x8,
+      leftAlt: "Input 4 (degraded)",
+      rightAlt: "Output 4 (restored)",
+      label: "Upscaling factor : ×8"
     }
   ]}
 />
+
+## Motivation 
+
+We introduce a learnable Sobolev exponent s that directly controls frequency emphasis in the transformation.
+When s&nbsp;&gt;&nbsp;0, high-frequency components are amplified, resulting in sharper,
+whereas s&nbsp;&lt;&nbsp;0 enhances low-frequency components, producing smoother outputs.
+
+<div class="flex justify-center my-8 not-prose">
+  <img
+    src={motivation}
+    alt="Motivation figure"
+    width="1000"
+    class="rounded-xl shadow-md"
+  />
+</div>
 
 ## Architecture
 
@@ -131,23 +180,24 @@ The proposed SoFoNO architecture consists of three main stages: Encoder, SoFoNO 
   </Figure>
 </div>
 
-First, a low-resolution (LR) image is processed by an EDSR encoder to produce deep feature maps that capture local texture information.
-Then, a Local Ensemble module performs arbitrary-scale upsampling by aggregating nearby latent features with their relative coordinates, enabling flexible resolution synthesis.
- These features are fed into a sequence of SoFoNO Blocks, each containing two parallel branches: a Local Branch that refines spatial details and a Sobolev Branch that operates in the frequency domain to emphasize high-frequency components using a learnable Sobolev exponent.
- The two branches are adaptively fused through Cross-Mixing and AdaIN operations to effectively integrate spatial and spectral information. 
- Finally, the Decoder reconstructs the high-resolution image through lightweight convolutional layers and bilinear interpolation, while a combined real- and frequency-domain loss ensures balanced optimization.
+First, a low-resolution (LR) image is processed by an EDSR encoder to produce deep feature maps that capture local texture information. 
+Then, a Local Ensemble module performs arbitrary-scale upsampling by aggregating nearby latent features with their relative coordinates, enabling flexible resolution synthesis. 
+These features are fed into a sequence of **SoFoNO Blocks**, each containing two parallel branches: a **Local Branch** that refines spatial details and a **Sobolev Branch** that operates in the frequency domain to emphasize high-frequency components using a learnable Sobolev exponent. 
+The two branches are adaptively fused through **Cross-Mixing** and AdaIN operations to effectively integrate spatial and spectral information. 
+Finally, the Decoder reconstructs the high-resolution image through lightweight convolutional layers and bilinear interpolation, while a combined real- and frequency-domain loss ensures balanced optimization.
 
 ## Results
 
 ### Quantitative Results
 
 <div class="flex flex-col items-center gap-8">
-  <div class="bg-white inline-block px-5 rounded-xl">
+  <div class="bg-white inline-block px-5 rounded-xl w-[600px]">
     <Figure>
       <Picture
         slot="figure"
         src={div2k}
         alt="DIV2K Dataset Benchmark Table"
+        class="w-full"
       />
       <Fragment slot="caption">
         Results on the DIV2K validation set.
@@ -155,7 +205,7 @@ Then, a Local Ensemble module performs arbitrary-scale upsampling by aggregating
     </Figure>
   </div>
 
-  <div class="bg-white inline-block px-5 rounded-xl">
+  <div class="bg-white inline-block px-5 rounded-xl w-[800px]">
     <Figure>
       <Picture
         slot="figure"
@@ -170,7 +220,7 @@ Then, a Local Ensemble module performs arbitrary-scale upsampling by aggregating
 </div>
 
 SoFoNO demonstrates consistently superior performance across various datasets.
-It achieves outstanding results on the DIV2K validation set and maintains high performance on multiple benchmark datasets, including Set5, Set14, B100, and Urban100. 
+It achieves outstanding results on the **DIV2K validation set** and maintains high performance on multiple **benchmark datasets**, including Set5, Set14, B100, and Urban100. 
 These results highlight SoFoNO’s strong generalization ability and its effectiveness in producing high-quality, detail-preserving reconstructions across diverse image domains.
 
 ### Qualitative Results
@@ -192,9 +242,49 @@ These results highlight SoFoNO’s strong generalization ability and its effecti
 </div>
 
 SoFoNO demonstrates remarkable visual fidelity. 
-The left panel (×4) shows SoFoNO’s ability to accurately reconstruct fine textures and structural patterns, preserving high-frequency details with exceptional clarity.
-In contrast, the right panel (×10) highlights its robustness under extreme out-scale conditions, where conventional methods often fail. 
+The left panel (×4) shows SoFoNO’s ability to accurately reconstruct fine textures and structural patterns, preserving high-frequency details with exceptional clarity at **in-scale**.
+In contrast, the right panel (×10) highlights its robustness under **out-scale** conditions, where conventional methods often fail. 
 SoFoNO faithfully restores complex structures like ceiling textures, maintaining both texture coherence and geometric consistency.
+
+## Analysis
+
+During training, the learnable Sobolev exponent s initially takes negative values, indicating a focus on low-frequency, coarse structures.
+As training progresses, s gradually increases and becomes positive, shifting the model’s emphasis toward high-frequency details and resulting in sharper, more refined reconstructions.
+
+<div class="flex flex-col items-center gap-8">
+
+  <div class="bg-white inline-block px-5 rounded-xl w-[700px]">
+    <Figure>
+      <Picture
+        slot="figure"
+        src={plot}
+        alt="Training dynamics of Sobolev exponent"
+        class="rounded-lg w-full"
+      />
+      <Fragment slot="caption">
+        Convergence trend of parameter s in SoFoNO during training.
+      </Fragment>
+    </Figure>
+  </div>
+
+  <div class="bg-white inline-block px-5 rounded-xl w-[900px] shadow-md">
+    <Figure>
+      <Picture
+        slot="figure"
+        src={freq}
+        alt="Frequency emphasis visualization"
+        class="rounded-lg w-full"
+      />
+      <Fragment slot="caption">
+        <span class="text-gray-600 dark:text-gray-400">
+          Reconstructed image (x7) patches (left) and corresponding frequency error maps (right) for different values of s.
+        </span>
+      </Fragment>
+    </Figure>
+  </div>
+
+</div>
+
 
 ## BibTeX citation
 

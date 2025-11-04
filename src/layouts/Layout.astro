@@ -10,7 +10,7 @@ import "katex/dist/katex-swap.css";
 
 import am2 from "../assets/am2.png";
 import cmlab from "../assets/cmlab.png";
-import logo from "../assets/logo.png"; // ✅ 추가
+import logo from "../assets/logo.png";
 
 interface Props {
   frontmatter: {
@@ -76,7 +76,6 @@ const hwijae = authors.find(a => a.name?.toLowerCase()?.includes("hwijae"));
         class="absolute -top-10 right-0 w-48 opacity-35 pointer-events-none select-none -z-10 md:w-60 lg:w-72 mix-blend-lighten dark:mix-blend-screen border-none shadow-none"
       />
 
-
       <div class="max-w-[80rem] text-center relative z-10">
         <h1 class="text-6xl font-SmallCaps leading-tight break-words relative z-20">
           {title}
@@ -84,7 +83,6 @@ const hwijae = authors.find(a => a.name?.toLowerCase()?.includes("hwijae"));
       </div>
 
       <div class="flex flex-col items-center gap-5 leading-snug relative z-10">
-
         {conference && (
           <div class="text-3xl font-semibold tracking-wide text-gray-900 dark:text-gray-100">
             {conference}
@@ -92,11 +90,11 @@ const hwijae = authors.find(a => a.name?.toLowerCase()?.includes("hwijae"));
         )}
 
         <div class="flex flex-wrap justify-center items-center gap-6 text-xl font-medium text-gray-800 dark:text-gray-200 text-center">
-
           {jong && (
             <div class="flex flex-row items-center gap-2">
               <span>
                 {jong.name}<sup>a</sup>
+                {jong.notes && jong.notes.length > 0 ? <sup>{jong.notes.join("")}</sup> : ""}
               </span>
               <img src={am2.src} alt="Applied Mathematics & Machine Learning" class="h-5 w-auto inline-block align-middle" />
             </div>
@@ -113,6 +111,7 @@ const hwijae = authors.find(a => a.name?.toLowerCase()?.includes("hwijae"));
                 >
                   {hwijae.name}
                 </a><sup>b</sup>
+                {hwijae.notes && hwijae.notes.length > 0 ? <sup>{hwijae.notes.join("")}</sup> : ""}
               </span>
             </div>
           )}
@@ -128,6 +127,7 @@ const hwijae = authors.find(a => a.name?.toLowerCase()?.includes("hwijae"));
                 >
                   {hw.name}
                 </a><sup>a</sup>
+                {hw.notes && hw.notes.length > 0 ? <sup>{hw.notes.join("")}</sup> : ""}
               </span>
               <img src={am2.src} alt="Applied Mathematics and Machine Learning" class="h-5 w-auto inline-block align-middle" />
             </div>

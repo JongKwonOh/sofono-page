@@ -75,7 +75,7 @@ export default function DemoSwitcher({ pairs }: DemoSwitcherProps) {
         />
 
         <figcaption className="text-center text-sm text-zinc-600 dark:text-zinc-400 mt-2">
-          A photo comparison between degraded input and reconstructed output.
+          A photo comparison between low resolution input (Bicubic) and high resolution output (Reconstructed).
         </figcaption>
       </figure>
     </div>
