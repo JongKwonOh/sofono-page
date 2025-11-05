@@ -6,8 +6,8 @@ import Notes from "../components/Notes.astro";
 import type { Author, Note, Link } from "../types/types";
 
 import "../styles/global.css";
-import "katex/dist/katex-swap.css";
-
+import "katex/dist/katex.min.css";
+import katex from "katex";
 import am2 from "../assets/am2.png";
 import cmlab from "../assets/cmlab.png";
 import logo from "../assets/logo.png";
@@ -45,6 +45,10 @@ const jong = authors.find(a => a.name?.includes("Jong Kwon Oh"));
 const hw = authors.find(a => a.name?.toLowerCase()?.includes("hyung ju"));
 const jih = authors.find(a => a.name?.toLowerCase()?.includes("jihyong"));
 const hwijae = authors.find(a => a.name?.toLowerCase()?.includes("hwijae"));
+
+const soStarts = typeof title === "string" && title.startsWith("So");
+const rest = soStarts ? title.slice(2) : title;
+
 ---
 
 <!doctype html>
@@ -55,7 +59,7 @@ const hwijae = authors.find(a => a.name?.toLowerCase()?.includes("hwijae"));
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
 
-    <link rel="icon" type="image/svg+xml" href={prefix + favicon} />
+    <link rel="icon" type="image/png" href={logo.src} />
 
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
@@ -73,12 +77,12 @@ const hwijae = authors.find(a => a.name?.toLowerCase()?.includes("hwijae"));
       <img
         src={logo.src}
         alt="Logo background"
-        class="absolute -top-10 right-0 w-48 opacity-35 pointer-events-none select-none -z-10 md:w-60 lg:w-72 mix-blend-lighten dark:mix-blend-screen border-none shadow-none"
+        class="absolute -top-10 left-0 w-48 opacity-35 pointer-events-none select-none -z-10 md:w-60 lg:w-72 mix-blend-lighten dark:mix-blend-screen border-none shadow-none"
       />
 
       <div class="max-w-[80rem] text-center relative z-10">
         <h1 class="text-6xl font-SmallCaps leading-tight break-words relative z-20">
-          {title}
+          <span class="bg-gradient-to-r from-blue-500 to-red-500 bg-clip-text text-transparent">So</span>FoNO : Arbitrary-Scale Image Super-Resolution via Sobolev Fourier Neural Operator
         </h1>
       </div>
 

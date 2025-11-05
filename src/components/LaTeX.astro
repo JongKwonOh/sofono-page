@@ -1,21 +1,55 @@
 ---
 import katex from "katex";
 
-interface Props {
-  formula: string;
+/**
+ * Props:
+ *  - tex?: string        // 권장 prop 이름
+ *  - formula?: string    // 과거 호환 prop
+ *  - display?: boolean   // 블록 표시 여부 (기본 true)
+ *  - inline?: boolean    // 인라인 표시 여부 (기본 !display)
+ *  - class?: string      // 추가 클래스
+ */
+type Props = {
+  tex?: string;
+  formula?: string;
+  display?: boolean;
   inline?: boolean;
+  class?: string;
+};
+
+const {
+  tex: texProp,
+  formula,
+  display = true,
+  inline = !display,
+  class: className = "",
+} = Astro.props as Props;
+
+// 1) tex/formula prop 우선
+// 2) 기본 슬롯 문자열 사용
+let tex = "";
+if (typeof texProp === "string") {
+  tex = texProp;
+} else if (typeof formula === "string") {
+  tex = formula;
+} else if (Astro.slots?.has("default")) {
+  // 슬롯을 문자열로 렌더 (Astro는 비동기)
+  tex = await Astro.slots.render("default");
 }
 
-const { formula, inline = false } = Astro.props;
-const html = katex.renderToString(formula, { throwOnError: false });
+// 안전 캐스팅
+tex = String(tex ?? "");
+
+// KaTeX 렌더
+const html = katex.renderToString(tex, {
+  displayMode: !inline,   // inline=true면 displayMode=false
+  throwOnError: false,    // 에러나도 계속 렌더
+  strict: "ignore",
+});
 ---
 
-{
-  inline ? (
-    <span set:html={html} />
-  ) : (
-    <div class="text-center">
-      <span set:html={html} />
-    </div>
-  )
-}
+{inline ? (
+  <span class={`katex-wrapper ${className}`} set:html={html} />
+) : (
+  <div class={`not-prose text-center katex-wrapper ${className}`} set:html={html} />
+)}

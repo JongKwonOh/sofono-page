@@ -1,7 +1,7 @@
 ---
 layout: ../layouts/Layout.astro
 title: "SoFoNO : Arbitrary-Scale Image Super-Resolution via Sobolev Fourier Neural Operator"
-conference: NeuroComputing'25
+conference: Neurocomputing'25
 authors:
   - name: Jong Kwon Oh
     institution: Pohang University of Science and Technology
@@ -149,10 +149,18 @@ import freq from "../assets/frequency_comparison.png"
 />
 
 ## Motivation 
+We utilize a practical approximation method, regardless of whether <LaTeX inline>{String.raw`s \in \mathbb{N}`}</LaTeX>.
+The equation is as follows:
 
-We introduce a learnable Sobolev exponent s that directly controls frequency emphasis in the transformation.
-When s&nbsp;&gt;&nbsp;0, high-frequency components are amplified, resulting in sharper,
-whereas s&nbsp;&lt;&nbsp;0 enhances low-frequency components, producing smoother outputs.
+<LaTeX>
+{String.raw`\begin{equation}
+\Vert f \Vert_{H^s}^2 \approx \Vert \mathcal{F}^{-1}\!\big((1+\Vert \xi \Vert^2)^{s/2}\,\mathcal{F}(f)\big)\Vert_{L^2}^2 \,,
+\end{equation}`}
+</LaTeX>
+
+where <LaTeX inline>{String.raw`\xi`}</LaTeX> represents the frequency domain variable, 
+<LaTeX inline>{String.raw`\mathcal{F}`}</LaTeX> and <LaTeX inline>{String.raw`\mathcal{F}^{-1}`}</LaTeX> denote the Fast Fourier Transform (FFT) and the Inverse Fast Fourier Transform (IFFT), respectively, and 
+<LaTeX inline>{String.raw`s \in \mathbb{R}`}</LaTeX> represents the derivative order. 
 
 <div class="flex justify-center my-8 not-prose">
   <img
@@ -162,6 +170,9 @@ whereas s&nbsp;&lt;&nbsp;0 enhances low-frequency components, producing smoother
     class="rounded-xl shadow-md"
   />
 </div>
+
+We introduce a learnable Sobolev exponent s that directly controls frequency emphasis in the transformation. 
+When s&nbsp;&gt;&nbsp;0, high-frequency components are amplified, resulting in sharper, whereas s&nbsp;&lt;&nbsp;0 enhances low-frequency components, producing smoother outputs.
 
 ## Architecture
 
