@@ -54,11 +54,16 @@ export const components = { table: Table }
 import am2 from "../assets/am2.png";
 import cmlab from "../assets/cmlab.png";
 
-import outside from "../assets/outside.mp4";
 import transformer from "../assets/transformer.webp";
 import graphical_abstract from "../assets/graphical_abstract.png"
 
-import demo_1 from "../assets/demo_1.gif?url"
+import div2k from "../assets/DIV2K_table.png"
+import benchmark_table from "../assets/Benchmark_table.png"
+import benchmark_table_1 from "../assets/Benchmark_table1.png"
+import benchmark_table_2 from "../assets/Benchmark_table2.png"
+import qualitative_result from "../assets/qualitative_result.png"
+import qualitative_result_1 from "../assets/qualitative_result_1.png"
+import qualitative_result_2 from "../assets/qualitative_result_2.png"
 
 import input_x2 from "../assets/input_x2.png"
 import output_x2 from "../assets/output_x2.png"
@@ -69,17 +74,13 @@ import output_x4 from "../assets/output_x4.png"
 import input_x8 from "../assets/input_x8.png"
 import output_x8 from "../assets/output_x8.png"
 
-import div2k from "../assets/DIV2K_table.png"
-import benchmark_table from "../assets/Benchmark_table.png"
-import benchmark_table_1 from "../assets/Benchmark_table1.png"
-import benchmark_table_2 from "../assets/Benchmark_table2.png"
-import qualitative_result from "../assets/qualitative_result.png"
-import qualitative_result_1 from "../assets/qualitative_result_1.png"
-import qualitative_result_2 from "../assets/qualitative_result_2.png"
-
 import motivation from "../assets/motivation.png?url"
 import plot from "../assets/plot_s.png"
 import freq from "../assets/frequency_comparison.png"
+
+import demo_1 from "../assets/demo_1.gif?url"
+import demo_input from "../assets/demo_zoom_input.png";
+import demo_zoom from "../assets/demo_zoom.gif?url";
 
 <br />
 
@@ -102,51 +103,107 @@ import freq from "../assets/frequency_comparison.png"
 
 ## Demo
 
-<div class="flex flex-col items-center my-6 space-y-3 not-prose">
-  <p class="text-center text-lg font-bold text-gray-800 dark:text-gray-200">
-    <span>Upscaling factor ×4</span>  <br /> <br />
-    <span>Input</span>
-    <span class="inline-block mx-45"> </span>
-    <span>Output</span>
-  </p>
-  <img src={demo_1} alt="Demo animation" width="800" class="rounded-xl shadow-md" />
+<div className="space-y-20">
+  {/* DEMO 1: 34px → 340px Transition */}
+  <section id="demo-fixed" className="not-prose">
+    <header className="mb-6 flex items-center gap-3">
+      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-red-500 to-blue-500 text-white text-sm font-bold shadow">1</span>
+      <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">Changing resolution (34px → 340px)</h2>
+    </header>
+
+    <div className="mt-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/40 p-6 shadow-sm ring-1 ring-black/5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div className="flex flex-col items-center">
+          <p className="mb-2 text-lg font-bold text-gray-800 dark:text-gray-200">Input</p>
+          <div className="w-[450px] h-[450px] flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+            <img
+              src={demo_input.src ?? demo_input}
+              alt="Input (degraded / LR)"
+              className="object-contain w-full h-full"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <p className="mb-2 text-lg font-bold text-gray-800 dark:text-gray-200">Output</p>
+          <div className="w-[450px] h-[450px] flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+            <img
+              src={demo_zoom}
+              alt="Output (zoom animation)"
+              className="object-contain w-full h-full"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent" />
+
+  {/* DEMO 2: ×4 Visualization */}
+  <section id="demo-zoom" className="not-prose">
+    <header className="mb-6 flex items-center gap-3">
+      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 text-white text-sm font-bold shadow">2</span>
+      <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">Zoom-In Animation</h2>
+    </header>
+
+    <div className="mt-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/40 p-6 shadow-sm ring-1 ring-black/5">
+      <div className="flex flex-col items-center">
+        <p className="mb-2 text-lg font-bold text-gray-800 dark:text-gray-200">  <span>Input</span> <span className="mx-50"></span> <span>Output</span></p>
+        <div className="w-[950px] h-[360px] flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-800">
+          <img src={demo_1} alt="×4 Visualization" className="object-contain w-full h-full rounded-xl shadow-md" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent" />
+
+  {/* DEMO 3: Multi-scale Before/After Comparison */}
+  <section id="demo-switcher" className="not-prose">
+    <header className="mb-6 flex items-center gap-3">
+      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 text-white text-sm font-bold shadow">3</span>
+      <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">Multi-scale Before/After Comparison</h2>
+    </header>
+
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/40 p-6 shadow-sm ring-1 ring-black/5">
+      <DemoSwitcher
+        client:idle
+        pairs={[
+          {
+            leftSrc: input_x2.src ?? input_x2,
+            rightSrc: output_x2.src ?? output_x2,
+            leftAlt: "Input 1 (degraded)",
+            rightAlt: "Output 1 (restored)",
+            label: "Upscaling factor : ×2",
+          },
+          {
+            leftSrc: input_x3.src ?? input_x3,
+            rightSrc: output_x3.src ?? output_x3,
+            leftAlt: "Input 2 (degraded)",
+            rightAlt: "Output 2 (restored)",
+            label: "Upscaling factor : ×3",
+          },
+          {
+            leftSrc: input_x4.src ?? input_x4,
+            rightSrc: output_x4.src ?? output_x4,
+            leftAlt: "Input 3 (degraded)",
+            rightAlt: "Output 3 (restored)",
+            label: "Upscaling factor : ×4",
+          },
+          {
+            leftSrc: input_x8.src ?? input_x8,
+            rightSrc: output_x8.src ?? output_x8,
+            leftAlt: "Input 4 (degraded)",
+            rightAlt: "Output 4 (restored)",
+            label: "Upscaling factor : ×8",
+          },
+        ]}
+      />
+    </div>
+  </section>
 </div>
 
-
-
-<DemoSwitcher
-  client:idle
-  pairs={[
-    {
-      leftSrc: input_x2.src ?? input_x2,
-      rightSrc: output_x2.src ?? output_x2,
-      leftAlt: "Input 1 (degraded)",
-      rightAlt: "Output 1 (restored)",
-      label: "Upscaling factor : ×2"
-    },
-    {
-      leftSrc: input_x3.src ?? input_x3,
-      rightSrc: output_x3.src ?? output_x3,
-      leftAlt: "Input 2 (degraded)",
-      rightAlt: "Output 2 (restored)",
-      label: "Upscaling factor : ×3"
-    },
-    {
-      leftSrc: input_x4.src ?? input_x4,
-      rightSrc: output_x4.src ?? output_x4,
-      leftAlt: "Input 3 (degraded)",
-      rightAlt: "Output 3 (restored)",
-      label: "Upscaling factor : ×4"
-    },
-    {
-      leftSrc: input_x8.src ?? input_x8,
-      rightSrc: output_x8.src ?? output_x8,
-      leftAlt: "Input 4 (degraded)",
-      rightAlt: "Output 4 (restored)",
-      label: "Upscaling factor : ×8"
-    }
-  ]}
-/>
 
 ## Motivation 
 We utilize a practical approximation method, regardless of whether <LaTeX inline>{String.raw`s \in \mathbb{N}`}</LaTeX>.
